@@ -1,0 +1,55 @@
+:root.a{
+    --backgroudPrimary: #070618;
+    --primaryColor:#00D4D1;
+    --secondaryColor:#FF0040;
+    --textColor: #f1f3f4;
+  }
+  
+  .landingScreen{
+      height: 105vh;
+      width: 100%;
+      background-color: #070618;
+      padding: 0;
+      margin: 0;
+      background-image: url('../public/images/globe.png');
+      background-position: right;
+      background-size: cover;
+      background-repeat: no-repeat;
+      
+    margin: 0;
+  }
+  
+  
+  .content{
+    color: antiquewhite;
+    font-family: 'bahnschrift';
+    display: flex;
+    text-align: left;
+    height: 100vh;
+    margin: 100px;
+    margin-left: 200px;
+    padding: 100px;
+    padding-top: 150px;
+  }
+  
+  .content h1{
+    font-family: 'bahnschrift condensed';
+    font-weight: bold;
+    font-size: 70px;
+    line-height: 40px;
+    width: 75%;
+    align-self: center;
+    /* background-color: aqua; */
+  }
+  
+  .content h3{
+    font-family: 'bahnschrift';
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 25px;
+    width: 75%;
+    align-self: center;
+    /* background-color: aqua; */
+  }
+  
+  

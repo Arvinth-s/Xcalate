@@ -1,19 +1,41 @@
+import React, { Component } from 'react';
 import styles from '../styles/Index.module.css';
-import Layout from '../components/Layout';
 import { Image, Grid, Button } from 'semantic-ui-react';
+import { Link, Router } from '../routes';
 import "semantic-ui-css/semantic.min.css";
 
+//import web3, etc
 
+var colors = {
+  primary: "#598FFF",
+  secondary: "#D10311",
+  text: "#f1f3f4",
+  backgroundColor: 'black',
+};
 
-export default function Home() {
+class Home extends Component {
 
-  var colors = {
-    primary: "#00D4D1",
-    secondary: "#FF0040",
-    text: "#f1f3f4",
-    backgroundColor: "#070618",
-  };
+  static async getInitialProps() {
+    //get address from metamask
+    var {address} = 'null'
+    
+    //comment underneath line
+    address = '0x9876A5bc27ff511bF5dA8f58c8F93281E5BD1f21'
+    return { address }
+  }
 
+  handleSignIn = () => {
+    //check for account subscription
+    //if subscribed, go to /home/market, else go to /subscribe
+    
+    if(true){ //insert above condition
+      Router.pushRoute(`/home/${this.props.address}/market`);
+    }else{
+      Router.pushRoute(`/subscribe`);
+    }
+  }
+
+ render(){
   return (
     <body>
       <div
@@ -35,40 +57,37 @@ export default function Home() {
             wrapped
           />
           {/* <a style={{color: colors.text, fontWeight: "bold"}}>Xcalate</a> */}
-          <a class="item right">HOME</a>
-          <a class="item">ABOUT</a>
-          <a class="item">PROCEDURE</a>
         </div>
       </div>
       <div className={styles.landingScreen} style={{ margin: 0 }}>
         <Grid columns={2} divided>
           <Grid.Row>
             <Grid.Column className={styles.content}>
-              <h1>WE ARE </h1>
-              <h1 style={{ color: colors.primary }}>TEAM XCALATE </h1>
+              <h1 style={{ color: colors.primary }}>XCALATE </h1>
               <h3 style={{ color: colors.text }}>
-                We work on solution to bring stock market for all
+                A place to read, write, grow and help others grow.
               </h3>
-              <Button
+              <Link route={`/home/${this.props.address}/market`}>
+              <Button onClick={this.handleSignIn}
                 style={{
-                  backgroundColor: colors.primary,
                   marginTop: "50px",
-                  color: "#000",
                 }}
-                className="ui primary button"
+                inverted color='red'
               >
                 Sign In
               </Button>
+              </Link>
+              <Link route='/subscribe'>
               <Button
                 style={{
-                  backgroundColor: colors.secondary,
                   marginTop: "50px",
                   marginLeft: "20px",
                 }}
-                className="ui primary button"
+                inverted color='red'
               >
-                Sign Up
+                Subscribe
               </Button>
+              </Link>
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -76,3 +95,6 @@ export default function Home() {
     </body>
   );
 }
+}
+
+export default Home;

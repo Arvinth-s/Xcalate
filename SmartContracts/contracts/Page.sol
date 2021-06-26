@@ -12,10 +12,13 @@ contract Page{
         bool purchase;
         uint price;
         uint quantity;
+        bytes32 receipt;
+        bool valid;
     }  
 
-    Order[] public orders;
-    mapping(address, uint) share;
+    mapping(address => uint) share;
+    mapping(bytes32 => Order) orders;
+    mapping(bytes32 => bool) receipts;
     address org;
     string name;
     uint likes;
@@ -36,9 +39,22 @@ contract Page{
 
     }
 
-    //should
-    function PlaceOrder(address customer, uint nstocks, uint price) payable private{
-         assert(msg.sender==org);
+    function bid(address buyer, uint nstocks, uint price) payable public returns(bytes32){
+        assert(msg.sender==org, "only the market contract can call this function");
+        return keccak256();
+    }
+
+    function ask(address seller, uint nstocks, uint price) payable{
+        assert(msg.sender==org, "only the market contract can call this function");
+    }
+
+    function cancelBid(address buyer, bytes32 receipt_addr){
+        assert(receipts[receipt_addr]==true, "The order doesn't exist");
+        assert(orders[receipt_addr].receipt == receipt_addr, "The order has different receipt");
+        assert(orders[receipt_addr].valid, "The order is not valid. Is already cancelled");
+        receipts[receipt_addr]=false;
+        orders[receipt_addr].valid=false;
+
     }
 
     
@@ -74,6 +90,16 @@ contract Market{
         assert(rem_reactions[user] > 0, "The user has no reactions left");
         Page memory page = Page(page_addr);
         page.like();
+    }
+
+    function bid(address page_addr, uint nstocks) public payable {
+        Page memory page = Page(page_addr);
+        page.bid(uint nstocks, uint price)
+    }
+
+    function ask(address page_addr, uint nstocks) public payable{
+        Page memory page = Page(page_addr);
+        page.ask(uint nstocks, uint price);
     }
 
 

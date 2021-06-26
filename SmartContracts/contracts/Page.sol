@@ -38,7 +38,7 @@ contract Page{
 
     //should
     function PlaceOrder(address customer, uint nstocks, uint price) payable private{
-         assert(msg.sender==customer)
+         assert(msg.sender==org);
     }
 
     
@@ -68,8 +68,8 @@ contract Market{
         subscribers[msg.sender]=block.timestamp + validity * 1 days;
     }
 
-    function like(address page_addr, address user){
-        assert(msg.sender==org, "Only organization can call this function");
+    function like(address page_addr){
+        address user = msg.sender;
         assert(subscribers[user]!=0, "The user has not subscribered");
         assert(rem_reactions[user] > 0, "The user has no reactions left");
         Page memory page = Page(page_addr);

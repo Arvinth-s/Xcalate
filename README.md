@@ -1,4 +1,4 @@
-# CROWDLY
+# CROWDLY - By Team Xcalate
 ##### A Decentralized social media platform that combats misinformation through crowdsourcing 
 ####
 

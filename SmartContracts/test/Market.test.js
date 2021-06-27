@@ -91,3 +91,92 @@ describe('Subsciption', async() => {
     
 });
 
+describe("IPO", async () => {
+  it("creates an instance", async function () {
+    await create_usdc();
+    instance = await Market.new(
+      default_params["Market"]["fee"],
+      default_params["Market"]["token"]
+    );
+  });
+
+  it("allows user to create a page", async function () {
+    var page_addr = await instance.ipo.call(
+      default_params["Page"]["_name"],
+      default_params["Page"]["_nstocks"],
+      { from: accounts[2] }
+    );
+
+    await instance.ipo.sendTransaction(
+      default_params["Page"]["_name"],
+      default_params["Page"]["_nstocks"],
+      { from: accounts[2] }
+    );
+
+    assert(page_addr != undefined);
+    assert(page_addr == (await instance.pages.call(0)));
+  });
+});
+
+describe("Transcation", async () => {
+  var page_addr;
+  var ask_receipt, bid_receipt;
+  it("creates IPO", async function () {
+    await create_usdc();
+    instance = await Market.new(
+      default_params["Market"]["fee"],
+      default_params["Market"]["token"]
+    );
+    page_addr = await instance.ipo.call(
+      default_params["Page"]["_name"],
+      default_params["Page"]["_nstocks"],
+      { from: accounts[2] }
+    );
+
+    await instance.ipo.sendTransaction(
+      default_params["Page"]["_name"],
+      default_params["Page"]["_nstocks"],
+      { from: accounts[2] }
+    );
+  });
+
+  it("allows owner to place a sell order", async function () {
+    await instance.ask.sendTransaction(
+      page_addr,
+      5,
+      100,
+      { from: accounts[2] }
+    );
+
+    ask_receipt = await instance.ask.call(page_addr, 5, 100, {
+      from: accounts[2],
+    });
+
+    console.log('ask receipt: ', ask_receipt);
+
+  });
+
+  it("allows a user to bid an order", async function () {
+
+    await usdc.approve.sendTransaction(page_addr, 5 * 101, {
+      from: accounts[3],
+    });
+
+    await instance.bid.sendTransaction(page_addr, 5, 100, {
+      from: accounts[3],
+    });
+
+    bid_receipt = await instance.bid.call(page_addr, 5, 100, {
+      from: accounts[3],
+    });
+
+    console.log("bid receipt: ", bid_receipt);
+  });
+
+ it('should make a deal', async function(){
+    await instance.makeDeal.sendTransaction(page_addr, accounts[3], accounts[2], 5, 5*100, ask_receipt, bid_receipt);
+ });
+
+
+});
+

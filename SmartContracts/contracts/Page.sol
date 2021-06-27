@@ -43,17 +43,16 @@ contract Page{
         require(receipts[ask_receipt] && receipts[bid_receipt], "Receipts is invalid");
         Order memory ask_order=orders[ask_receipt];
         Order memory bid_order = orders[bid_receipt];
-        require(amount > ask_order.amount, "The price is less than the ask price");
-        require(amount < bid_order.amount, "The price is greater than the bid amount");
+        require(amount >= ask_order.amount, "The price is less than the ask price");
+        require(amount <= bid_order.amount, "The price is greater than the bid amount");
         require(share[seller] >= nstocks, "The seller doesn't have enough share");
         require(usdc.allowance(buyer, address(this)) >= amount, "The buyer doesn't have enough allowance");
-        usdc.transferFrom(msg.sender, address(this), amount);
+        usdc.transferFrom(buyer, address(this), amount);
         usdc.transfer(seller, amount);
 
 
         share[seller] -= nstocks;
         share[buyer] += nstocks;
-        usdc.transfer(seller, amount);
 
 
         return true;
@@ -63,6 +62,7 @@ contract Page{
         require(msg.sender==org, "only the market contract can call this function");
         bytes32 receipt = keccak256(abi.encodePacked(buyer, block.timestamp));
         Order memory order = Order(buyer, true, price*nstocks, nstocks, receipt, true);
+        receipts[receipt]=true;
         orders[receipt]=order;
         return receipt;
     }
@@ -71,6 +71,7 @@ contract Page{
         require(msg.sender==org, "only the market contract can call this function");
         bytes32 receipt = keccak256(abi.encodePacked(seller, block.timestamp));
         Order memory order = Order(seller, false, price*nstocks, nstocks, receipt, true);
+        receipts[receipt]=true;
         orders[receipt]=order;
         return receipt;
     }

@@ -136,7 +136,6 @@ contract Market{
     function subscribe(uint validity) public {
         deposit(validity*subscription_fee);
         subscribers[msg.sender]=block.timestamp + validity * 1 days;
-       
     }
 
     function like(address page_addr) public {

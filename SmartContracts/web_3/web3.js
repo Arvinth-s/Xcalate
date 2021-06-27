@@ -1,9 +1,8 @@
 // import Portis from '@portis/web3';
 const Web3 = require("web3");
 const { mnemonic, projectId } = require("./secrets/secrets.json");
-const HDWalletProvider = require("truffle-hdwallet-provider");
+const HDWalletProvider = require("@truffle/hdwallet-provider");
 
-// console.log(projectId);
 
 // const portis = new Portis('c4eb0bfb-bbcb-4e23-8c38-f41129f1469f', 'maticMumbai');
 // let web3;

@@ -47,9 +47,13 @@ contract Page{
         require(amount <= bid_order.amount, "The price is greater than the bid amount");
         require(share[seller] >= nstocks, "The seller doesn't have enough share");
         require(usdc.allowance(buyer, address(this)) >= amount, "The buyer doesn't have enough allowance");
+
+        require(bid_order.quantity <= nstocks && ask_order.quantity <= nstocks, "Order stock quantity is less");
+
         usdc.transferFrom(buyer, address(this), amount);
         usdc.transfer(seller, amount);
-
+        bid_order.quantity -= nstocks;
+        ask_order.quantity -= nstocks;
 
         share[seller] -= nstocks;
         share[buyer] += nstocks;

@@ -16,13 +16,13 @@ contract Page{
         bool valid;
     }  
 
-    mapping(address => uint) share;
-    mapping(bytes32 => Order) orders;
-    mapping(bytes32 => bool) receipts;
-    address org;
-    string name;
-    uint likes;
-    ERC20 usdc;
+    mapping(address => uint) public share;
+    mapping(bytes32 => Order)  public orders;
+    mapping(bytes32 => bool)  public receipts;
+    address  public org;
+    string  public name;
+    uint  public likes;
+    ERC20  public usdc;
 
     constructor(string memory _name, uint nstocks, address owner, address _token) {
         name=_name;
@@ -104,13 +104,13 @@ contract Page{
 
 contract Market{
 
-    address[] pages;
-    mapping(address => uint) rem_reactions;
-    mapping(address => uint) subscribers;
-    address org;
-    address token;
-    uint subscription_fee;
-    ERC20 usdc;
+    address[] public pages;
+    mapping(address => uint) public rem_reactions;
+    mapping(address => uint) public subscribers;
+    address public org;
+    address public token;
+    uint public subscription_fee;
+    ERC20 public usdc;
 
     constructor(uint _fee, address _token){
         org = msg.sender;
@@ -136,6 +136,10 @@ contract Market{
     function subscribe(uint validity) public {
         deposit(validity*subscription_fee);
         subscribers[msg.sender]=block.timestamp + validity * 1 days;
+    }
+
+    function isSubscriber() public returns(uint){
+        return subscribers[msg.sender];
     }
 
     function like(address page_addr) public {

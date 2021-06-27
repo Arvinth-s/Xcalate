@@ -14,9 +14,6 @@ module.exports = async function (deployer) {
   const accounts = await web3.eth.getAccounts();
 
 
-  console.log('accounts: ', accounts);
-  console.log('token address: ', token_address);
-
   deployer.deploy(
     Market,
     1000, token_address 
